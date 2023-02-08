@@ -15,9 +15,10 @@ pipeline {
             steps {
                 echo "Cloning application repository"
                 //TODO("Lab 3 - Introduction to Automated Builds"): add github url
+                sh 'git clone https://github.com/calvintsang/afs-labs-student.git'
                 dir('afs-labs-student') {
                     script {
-                        sh 'git clone https://github.com/calvintsang/afs-labs-student.git'
+                        
                         env.COMMIT_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                     }
                 }
