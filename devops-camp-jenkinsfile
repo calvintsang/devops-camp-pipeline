@@ -15,8 +15,9 @@ pipeline {
             steps {
                 echo "Cloning application repository"
                 //TODO("Lab 3 - Introduction to Automated Builds"): add github url
-                sh 'git clone https://github.com/calvintsang/afs-labs-student.git'dir('afs-labs-student') {
+                dir('afs-labs-student') {
                     script {
+                        sh 'git clone https://github.com/calvintsang/afs-labs-student.git'
                         env.COMMIT_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                     }
                 }
@@ -24,7 +25,8 @@ pipeline {
             }
         }
         stage('Application docker build') {
-            steps {withCredentials([usernameColonPassword(credentialsId: 'Ctsang-harbor-auth', variable: 'HARBOR-AUTH')]) {
+            steps {
+                withCredentials([usernameColonPassword(credentialsId: 'Ctsang-harbor-auth', variable: 'HARBOR-AUTH')]) {
                     script {
                         sh 'docker build -t $APP_IMAGE_NAME-$COMMIT_HASH -f ./app/Dockerfile ./afs-labs-student'
                         docker.withRegistry('https://$HARBOR_REGISTRY', 'Ctsang-harbor-auth') {
