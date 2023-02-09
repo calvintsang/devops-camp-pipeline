@@ -31,7 +31,7 @@ pipeline {
               environment name: 'BUILD_DB', value: 'true'
            }
            stages {
-            steps {stage('Database docker build') {
+             stage('Database docker build') {
                     steps {
                         echo "Building database image"
                         withCredentials([usernameColonPassword(credentialsId: 'ctsang-harbor-auth', variable: 'HARBOR-AUTH')]) {
@@ -64,7 +64,6 @@ pipeline {
                             sh 'python harbor_scanner.py -i $DB_IMAGE_NAME -r $HARBOR_REGISTRY -p $HARBOR_PROJECT -c ${USERNAME}:${PASSWORD}'
                        }
                   }
-                }
               }
               stage('Deploy') {
                   steps {
